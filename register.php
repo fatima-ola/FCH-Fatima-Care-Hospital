@@ -1,4 +1,5 @@
-<?php  include_once('lib/header.php');
+<?php  include_once('lib/header.php'); 
+require_once('functions/alert.php');
 if(isset($_SESSION['loggedIn']) && !empty($_SESSION['loggedIn'])){
     //redirect to dashboard
     header("Location: dashboard.php");
@@ -7,16 +8,10 @@ if(isset($_SESSION['loggedIn']) && !empty($_SESSION['loggedIn'])){
 ?>
 <h3>Register</h3>
     <p><strong>Welcome, Please Register Here</strong></p>
+    <p style="color: red;">All Fields are Required</p>
     <form method = "POST" action = "processregister.php">
     <p>
-        <?php
-            if(isset($_SESSION['error']) && !empty($_SESSION['error'])){
-                echo "<span style = 'color: red'>" .$_SESSION['error']. "</span>";
-
-                // session_unset();
-                session_destroy();
-            }
-        ?>
+        <?php print_alert(); ?>
     </p>
         <p>
             <label>First Name</label><br />
@@ -26,7 +21,7 @@ if(isset($_SESSION['loggedIn']) && !empty($_SESSION['loggedIn'])){
                     echo "value=" . $_SESSION['first_name'];
                 }
             ?>
-            type="text" name="first_name" placeholder ="Enter Your First Name Here..." >
+            type="text" name="first_name" placeholder ="Enter Your First Name Here...">
         </p>
         <p>
             <label>Last Name</label><br />
@@ -36,7 +31,7 @@ if(isset($_SESSION['loggedIn']) && !empty($_SESSION['loggedIn'])){
                     echo "value=" . $_SESSION['last_name'];
                 }
             ?>
-            type="text" name="last_name" placeholder ="Enter Your Last Name Here..." >
+            type="text" name="last_name" placeholder ="Enter Your Last Name Here...">
         </p>
         <p>
             <label>Email</label><br />
@@ -46,15 +41,15 @@ if(isset($_SESSION['loggedIn']) && !empty($_SESSION['loggedIn'])){
                     echo "value=" . $_SESSION['email'];
                 }
             ?>
-            type="text" name="email" placeholder ="Enter Your Email Address Here..." >
+            type="text" name="email" placeholder ="Enter Your Email Address Here...">
         </p>
         <p>
             <label>Password</label><br />
-            <input type="password" name="password" placeholder ="Enter Your Password Here..." >
+            <input type="password" name="password" placeholder ="Enter Your Password Here...">
         </p>
         <p>
             <label>Gender</label><br />
-            <select name = "gender" >
+            <select name = "gender" required>
                 <option value="">Select One</option>
                 <option
                 <?php
@@ -75,7 +70,7 @@ if(isset($_SESSION['loggedIn']) && !empty($_SESSION['loggedIn'])){
         </p>
         <p>
             <label>Designation</label><br />
-            <select name="designation" >
+            <select name="designation" required>
                 <option value="">Select One</option>
                 <option
                 <?php
@@ -109,7 +104,7 @@ if(isset($_SESSION['loggedIn']) && !empty($_SESSION['loggedIn'])){
                     echo "value=" . $_SESSION['department'];
                 }
             ?>
-            type="text" name="department" placeholder ="Enter Your Department Here..." >
+            type="text" name="department" placeholder ="Enter Your Department Here...">
         </p>
         <p>
             <button type="submit">Register</button>

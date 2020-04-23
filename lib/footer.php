@@ -1,4 +1,3 @@
-
  <!--MENU-->
  <p>
     <a href="index.php">Home</a> |
@@ -17,4 +16,4 @@
         
    </p>
 </body>
-</html>
+</html> 

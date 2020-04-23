@@ -42,6 +42,7 @@ if($errorCount > 0){
            if($passwordFromDB == $passwordFromUser){
                //redirect to dashboard
                $_SESSION['loggedIn'] = $userObject->id;
+               $_SESSION['email'] = $userObject->email;
                $_SESSION['fullname'] = $userObject->first_name . " " . $userObject->last_name;
                $_SESSION['role'] = $userObject->designation;
                if($userObject->designation === 'Patient'){

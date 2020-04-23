@@ -1,13 +1,9 @@
 <?php session_start();
-// connecting pages together
-// print_r($_POST);
-
-//collecting the data
+    require_once('functions/user.php');
 
 $errorCount = 0;
 
-//verifying the data, validating the data
-
+//collecting the data, validating the data
 $first_name = $_POST['first_name'] != "" ? $_POST['first_name'] : $errorCount++;
 $last_name = $_POST['last_name'] != "" ? $_POST['last_name'] : $errorCount++;
 $email= $_POST['email'] != "" ? $_POST['email'] : $errorCount++;
@@ -16,6 +12,7 @@ $gender = $_POST['gender'] != "" ? $_POST['gender'] : $errorCount++;
 $designation = $_POST['designation'] != "" ? $_POST['designation'] : $errorCount++;
 $department = $_POST['department'] != "" ? $_POST['department'] : $errorCount++;
 
+// saving into session variables.
 $_SESSION['first_name'] = $first_name;
 $_SESSION['last_name'] = $last_name;
 $_SESSION['email'] = $email;
@@ -24,16 +21,7 @@ $_SESSION['designation'] = $designation;
 $_SESSION['department'] = $department;
 
 
-
-
 if($errorCount > 0){
-    //redirect back and display error
-    //header("Location: register.php? message=something went wrong with the submission");
-    /* $_SESSION["error"] = "You have " . $errorCount . " errors in your form submission";*/
-
-    
-
-
     $session_error = "You have " . $errorCount . " error";
 
     if($errorCount > 1){
@@ -43,16 +31,10 @@ if($errorCount > 0){
 
     $session_error .= " in your form submission";
     $_SESSION["error"] = $session_error;
-
     header("Location: register.php");
+
 }else{
     
-    
-    //count all users
-
-    $allUsers = scandir("db/users/");
-    
-    $countAllUsers = count($allUsers);
 
     $newUserId = ($countAllUsers-1);
 
@@ -61,38 +43,25 @@ if($errorCount > 0){
         'first_name' =>$first_name,
         'last_name' =>$last_name,
         'email' =>$email,
-        'password' =>password_hash($password, PASSWORD_DEFAULT), //password hashing
+        'password' =>password_hash($password, PASSWORD_DEFAULT), 
         'gender' =>$gender,
         'designation' =>$designation,
         'department' =>$department
-    ];
+    ];  
 
     //check if the user already exists.
-    //Assign ID to the user,
-    // ***count all the users
-    // ***assign the next id to the new user
-    // count($users) => 2, next user should then be id = 3
 
-    //look into the database array, and check if the email already exists...
-    // loop
-
+     $userExists = find_user($email);
     
-
-    for($counter = 0; $counter < $countAllUsers; $counter++){
-        $currentUser = $allUsers[$counter];
-
-        if($currentUser == $email . ".json"){
+        if($userExists){
             $_SESSION["error"] = "Registration Failed, User Alreay Exists ";
             header("Location: register.php");
             die();
         }
-    }
-
-    //validating name
     
 
     //save in the database
-    file_put_contents("db/users/". $email . ".json", json_encode($userObject));
+    save_user($userObject);
     $_SESSION["message"] = "Registration Successful, you can now login! " .$first_name . "  ". $last_name;
     header("Location: login.php");
 }
@@ -106,17 +75,16 @@ if (!stristr($email,"@") OR !stristr($email,".")) {
 // validate first name 
 
 if (!preg_match("/^[a-zA-Z ]*$/",$first_name)) {
-    $_SESSION["error"] = "Your name can only contain letters and white space" ;
+    $_SESSION["error"] = "Your First name can only contain letters and white space" ;
     header("Location: register.php");
 }
 
 // validate last name
+
 if (!preg_match("/^[a-zA-Z ]*$/",$last_name)) {
-    $_SESSION["error"] = "Your name can only contain letters and white space" ;
+    $_SESSION["error"] = "Your Last name can only contain letters and white space" ;
     header("Location: register.php");
 }
-
-
 
 //saving the data into the database/our filesystem / our folder
 
