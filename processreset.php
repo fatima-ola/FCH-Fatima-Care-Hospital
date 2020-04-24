@@ -1,10 +1,12 @@
 <?php session_start();
-
+    require_once('functions/user.php');
+    require_once('functions/alert.php');
+    require_once('functions/redirect.php');
 //collecting the data, validating the data
 
 $errorCount = 0;
 
-if(!$_SESSION['loggedIn']){
+if(!is_user_loggedIn()){
 
     $token = $_POST['token'] != "" ? $_POST['token'] : $errorCount++;
     $_SESSION['token'] = $token;
@@ -24,71 +26,46 @@ if($errorCount > 0){
     }
 
     $session_error .= " in your form submission";
-    $_SESSION["error"] = $session_error;
-    header("Location: reset.php");
+    
+    set_alert('error', $session_error);
+    redirect_to("reset.php");
 
 }else{
-    $allUserTokens = scandir("db/tokens/"); 
-    $countAllUserTokens = count($allUserTokens);
+   
+    $checkToken = is_user_loggedIn() ? true : find_token($email);
 
-    for($counter = 0; $counter < $countAllUserTokens; $counter++){
-        $currentTokenFile = $allUserTokens[$counter];
+    if($checkToken){
+        $userExists = find_user($email);
 
-        if($currentTokenFile == $email . ".json"){
-            $tokenContent = file_get_contents("db/tokens/".$currentTokenFile);
-            $tokenObject = json_decode($tokenContent);
-            $tokenFromDB = $tokenObject->token;
+        if($userExists){
+            //check password
+            /*$userString = file_get_contents("db/users/".$currentUser);
+            $userObject = json_decode($userString);*/
 
-            if($_SESSION['loggedIn']){
-                $checkToken = true;
-            }else{
-                $checkToken = $tokenFromDB == $token;
-            }
+            $userObject = find_user($email);
+            $userObject->password = password_hash($password, PASSWORD_DEFAULT);
+    
+            unlink("db/users/".$currentUser);
+            unlink("db/token/".$currentUser);
 
-            if($checkToken){
+            save_user($userObject);
 
-                $allUsers = scandir("db/users/");
-                $countAllUsers = count($allUsers);
+            set_alert('message', "Password Reset Successful, you can now login");
 
-                for($counter = 0; $counter < $countAllUsers; $counter++){
-        
-                    $currentUser = $allUsers[$counter];
+            $subject = "Password Reset Successful";
+            $message = "Your account on FCH has just been updated, your password has changed.
+            If you did not initiate the password change, please visit fch.org and reset your
+            password immediately";
             
-                    if($currentUser == $email . ".json"){
-                        //check password
-                        $userString = file_get_contents("db/users/".$currentUser);
-                        $userObject = json_decode($userString);
-                        $userObject->password = password_hash($password, PASSWORD_DEFAULT);
-                
-                        unlink("db/users/".$currentUser);
+            send_mail($subject, $message, $email);
 
-                        file_put_contents("db/users/". $email . ".json", json_encode($userObject));
-
-                        $_SESSION["message"] = "Pssword Reset Successful, you can now login";
-
-                        $subject = "Password Reset Successful";
-                        $message = "Your account on FCH has just been updated, your password has changed.
-                        If you did not initiate the password change, please visit fch.org and reset your
-                        password immediately";
-                        $headers = "From: no-reply@fch.org" . "\r\n" .
-                        "CC: fatima@fch.org";
-
-                        $try = mail($email,$subject,$message,$headers);
+            redirect_to("login.php");
+            return;
+        }                
         
-                        header("Location: login.php");
-                        die();
-                    }
-                }
-
-
-               
-            }
-            
-        }
     }
-
-    $_SESSION["error"] = "Password Reset Failed, token/email invalid or expired" ;
-    header("Location: login.php");
+    set_alert('error', "Password Reset Failed, token/email invalid or expired");
+    redirect_to("login.php");
 }
 
 ?>

@@ -1,11 +1,21 @@
 <?php  include_once('lib/header.php'); 
+    require_once('functions/redirect.php');
 if(!isset($_SESSION['loggedIn']) ){
     //redirect to dashboard
-    header("Location: login.php");
+    redirect_to("login.php");
 }
 ?>
-<h3>Dashboard</h3>
-    Welcome, <?php echo $_SESSION['fullname'] ?>, You are logged in as (<?php echo
-    $_SESSION['role'] ?>),and your ID is <?php echo $_SESSION['loggedIn'] ?>
+<div class="container h-100">
+    <div class="row h-100 justify-content-center align-items-center">
+        <h3>Dashboard</h3> 
+    </div>
+    <div class="row h-100 justify-content-center align-items-center">
+            Welcome, <?php echo $_SESSION['fullname'] ?>, You are logged in as (<?php echo
+            $_SESSION['role'] ?>),and your ID is <?php echo $_SESSION['loggedIn'] ?>
+    </div>
+</div>
+
+
+
 
 <?php include_once('lib/footer.php'); ?>

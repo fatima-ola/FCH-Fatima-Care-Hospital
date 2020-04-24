@@ -8,46 +8,55 @@ if(!is_user_loggedIn() && is_token_set()){
     header("Location: login.php");
 }
 ?>
+<div class="container h-100">
+    <div class="row h-100 justify-content-center align-items-center">
+    <h3>Reset Password</h3>
+    </div>
+    <div class="row h-100 justify-content-center align-items-center">
+        <p>Reset password associated with your account: [email]</p>
+    </div>
+    <div class="row h-100 justify-content-center align-items-center">
+        <form action="processreset.php"  method="POST">
+            <p>
+                <?php print_alert(); ?>
+            </p>
+            <?php if(!is_user_loggedIn()) { ?>
+            <input 
+            <?php              
+                if(is_token_set_in_session()){
+                    echo "value='" . $_SESSION['token'] . "'";                                                             
+                }else{
+                    echo "value='" . $_GET['token'] . "'";
+                }             
+            ?>
+            type="hidden" name="token" />
+                <?php } ?>
 
-  <h3>Reset Password</h3>
-  <p>Reset password associated with your account: [email]</p>
 
-<form action="processreset.php"  method="POST">
-    <p>
-        <?php print_error(); print_message(); ?>
-    </p>
-    <?php if(!is_user_loggedIn()) { ?>
-    <input 
-        <?php
-            if(is_token_set_in_seesion()){
-                echo "value='" . $_SESSION['token'] . "'";
-            }else{
-                echo "value='" . $_GET['token'] . "'";
-            }
-        
-        ?>
-    type="hidden" name="token" />
-        <?php } ?>
+            <p>
+            <label>Email</label><br />
+            <input 
+            <?php              
+                if(isset($_SESSION['email'])){
+                    echo "value=" . $_SESSION['email'];                                                             
+                }                
+                ?>
+
+            type="text" name="email" placeholder="Your Email Here..."  />
+            </p>
+
+            <p>
+                <label>Enter New Password</label><br />
+                <input type="password" name="password" placeholder ="Your Password Here...">
+            </p>
+            <p>
+                <button type="submit">Send Reset Code</button>
+            </p>
+        </form>
+    </div>
+</div>
+  
+ 
 
 
-    <p>
-    <label>Email</label><br />
-    <input 
-    <?php
-        if(isset($_SESSION['email'])){
-            echo "value=" . $_SESSION['email'];
-        }
-
-    ?>
-    type="text" name="email" placeholder ="Email Address">
-    </p>
-
-    <p>
-        <label>Enter New Password</label><br />
-        <input type="password" name="password" placeholder ="Enter Your Password Here...">
-    </p>
-    <p>
-        <button type="submit">Send Reset Code</button>
-    </p>
-</form>
 <?php include_once('lib/footer.php') ?>    
