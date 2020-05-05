@@ -13,7 +13,7 @@ $designation = $_POST['designation'] != "" ? $_POST['designation'] : $errorCount
 $department = $_POST['department'] != "" ? $_POST['department'] : $errorCount++;
 
 // saving into session variables.
-$_SESSION['first_name'] = $first_name;
+$_SESSION['first_name'] = $first_name;  
 $_SESSION['last_name'] = $last_name;
 $_SESSION['email'] = $email;
 $_SESSION['gender'] = $gender;
