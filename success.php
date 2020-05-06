@@ -7,16 +7,14 @@ if(!isset($_SESSION['loggedIn']) ){
 
 $ref = $_GET['txref'];
 ?>
-<?php
-mail('kashy200@gmail.com', 'Confirmation of payment', 'We successfully receive your payment','From: kashy200@gmail.com')
-?>
+
 
 <div class="container h-100">
     <div class="row h-100 justify-content-center align-items-center">
         <h3>Dashboard</h3> 
     </div>
     <div class="row h-100 justify-content-center align-items-center">
-            Welcome back, <?php echo $_SESSION['fullname'] ?>. Your reference Number is <?php print_r($ref);  ?>  
+            Welcome back, <?php echo $_SESSION['fullname'] ?>. Your reference Number is <?php echo $ref  ?>  
     </div>
     <div class="row h-100 justify-content-center align-items-center">
         <p class="text-success"><strong>Payment received successfully</strong></p>    

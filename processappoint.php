@@ -42,8 +42,7 @@ if($errorCount > 0){
     
 
     $newUserId = ($countAllUsers-1);
-
-
+    
     $userObject = [
         'id'=>$newUserId,
         'full_name' =>$full_name,
