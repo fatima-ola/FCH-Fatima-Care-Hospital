@@ -1,7 +1,7 @@
 <?php include_once('lib/header.php');
 require_once('functions/alert.php');
 require_once('functions/redirect.php');
-require_once('functions/user.php');
+
 
 ?>
 <div class="container h-100">
@@ -11,7 +11,9 @@ require_once('functions/user.php');
     <div class="row h-100 justify-content-center align-items-center">
         
         <form method="POST" action="processappoint.php">
-    
+            <p>
+                <?php print_alert(); ?>
+            </p>
                 
             <p>
                 <label lass="label" for="Full Name">Full Name</label><br>
@@ -20,11 +22,11 @@ require_once('functions/user.php');
 
             <p>
                 <label class="label" for="Phone Number">Phone Number</label><br>
-                <input type="text" class="form-control" name="phone number" placeholder="Phone Number">
+                <input type="text" class="form-control" name="phone_number" placeholder="Phone Number">
             </p>
             <p>
                 <label class="label" for="birthdate">Date of Birth</label><br>
-                <input type="date" class="form-control" name="birthdate">
+                <input type="date" class="form-control" name="birth_date">
             </p>
         
             <p>
@@ -33,11 +35,12 @@ require_once('functions/user.php');
             </p>
             <p>
                 <label class="label" for="Time of Appointment">Time of Appointment</label><br>
-                <input type="time" class="form-control" name="appointment">
+                <input type="time" class="form-control" name="time_appointment">
             </p>     
             <p>
                 <label class="label" for="Nature of Appointment">Nature of Appointment</label><br>
-                <select >
+                <select class="form-control" name="nature">
+                    <option value="">Select Nature of Appointment</option>
                     <option>consultation</option>
                     <option>Dental Section</option>
                     <option>Caesarian Section</option>
@@ -48,7 +51,7 @@ require_once('functions/user.php');
             </p>
             <p>
                <label class="label" for="Initial Complaint">Initial Complaint</label><br>
-               <textarea  cols="40" rows="3" placeholder="Write your complaint here..."></textarea> 
+               <textarea  cols="40" rows="3" name= "complaint" placeholder="Write your complaint here..."></textarea> 
             </p>
 
             <p>

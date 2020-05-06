@@ -55,6 +55,40 @@ function find_user($email = ""){
     return false;
 }
 
+function find_appoint($full_name = ""){
+    //check the database if the user exsits
+    if(!$full_name){
+        set_alert('error','User Full Name is not set');
+        die();
+    }
+
+    $allUsers = scandir("db/bookings/"); 
+    $countAllUsers = count($allUsers);
+
+    for ($counter = 0; $counter < $countAllUsers ; $counter++) {
+       
+        $currentUser = $allUsers[$counter];
+
+        if($currentUser == $email . ".json"){
+          //check the user password.
+            $userString = file_get_contents("db/bookings/".$currentUser);
+            $userObject = json_decode($userString);
+                       
+            return $userObject;
+          
+        }        
+        
+    }
+
+    return false;
+}
+
 function save_user($userObject){
     file_put_contents("db/users/". $userObject['email'] . ".json", json_encode($userObject));
 }
+
+function save_appoint($userObject){
+    file_put_contents("db/bookings/". $userObject['full_name'] . ".json", json_encode($userObject));
+
+}
+

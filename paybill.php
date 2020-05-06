@@ -11,7 +11,9 @@ require_once('functions/user.php');
     <div class="row h-100 justify-content-center align-items-center">
         
         <form method="POST" action="processbill.php">
-    
+            <p>
+                <?php print_alert(); ?>
+            </p>
                 
             <p>
                 <label lass="label" for="Full Name">Full Name</label><br>
